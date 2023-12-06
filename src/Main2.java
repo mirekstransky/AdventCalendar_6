@@ -6,40 +6,38 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Main {
+public class Main2 {
     public static void main(String[] args) throws IOException {
-        List<String> listInput = readAllLines("input6.txt");
+        List<String> listInput = readAllLines("input6gold.txt");
 
         String timeRow = listInput.get(0);
         String distanceRow = listInput.get(1);
         int idChar = timeRow.indexOf(":");
         String numbers = timeRow.substring(idChar+2,timeRow.length()).trim();
-        String[] timeRowArr = numbers.split("\\s+");
+        String timeRowArr = numbers.trim();
         int finalResult = 1;
 
         idChar = distanceRow.indexOf(":");
         numbers = distanceRow.substring(idChar+2,timeRow.length()).trim();
-        String[] distanceRowArr = numbers.split("\\s+");
+        String distanceRowArr = numbers.trim();
 
-        int[][] timeDistanceArr = loadArray(timeRowArr,distanceRowArr);
+
+        int timeRace = Integer.parseInt(timeRowArr);
+        int distanceRace = Integer.parseInt(distanceRowArr);
+
         int numberOfWays = 1;
 
-        for (int i = 0; i < timeRowArr.length; i++) {
-            int pokus = timeDistanceArr.length+1;
-            int timeRace = timeDistanceArr[0][i];
-            int distanceRace = timeDistanceArr[1][i];
+        numberOfWays = findWays(timeRace,distanceRace,14,71516);
+        finalResult *= numberOfWays;
 
-            numberOfWays = findWays(timeRace,distanceRace);
-            finalResult *= numberOfWays;
 
-        }
     System.out.printf("Výsledek je %d",finalResult);
 
     }
-    public static int findWays(int timeRace,int distanceRace){
+    public static int findWays(int timeRace,int distanceRace,int from, int last){
         int result = 0;
 
-        for (int i = 0; i < timeRace+1; i++) {
+        for (int i = from; i <= last; i++) {
 
             int timeRest = timeRace-i;
             int finalDistance = timeRest*i;
